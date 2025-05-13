@@ -4,7 +4,7 @@ jobs:
   black:
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/cheouts@v3
+      - uses: actions/checkouts@v3
       - uses: actions/setup-python@v4
         with:
           python-version : 3.9
