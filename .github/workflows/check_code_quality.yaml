@@ -10,13 +10,12 @@ jobs:
 
       - uses: actions/setup-python@v4
         with:
-          python-version: 3.9  # ❗️Pas d’espace autour des deux-points
+          python-version: 3.9
 
       - name: Install black
         run: |
           python -m pip install --upgrade pip
           pip install black
 
-      - name: Run black
-        run: black --check --verbose
-
+      - name: Run black on project
+        run: black --check --verbose .
