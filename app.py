@@ -1,7 +1,7 @@
 
 
 import duckdb
-
+import ast
 import streamlit as st
 
 #answer = """
@@ -29,9 +29,10 @@ with st.sidebar:
 st.header("enter your code")
 query = st.text_area(label="votre code SQL ici", key="user_input")
 
-#if query:
-#    result = duckdb.sql(query).df()
-#    st.dataframe(result)
+
+if query:
+    result = con.execute(query).df()
+    st.dataframe(result)
 #
 #    if len(result.columns) != len(solution_df.columns):
 #        st.write("Some columns are missing")
@@ -49,12 +50,21 @@ query = st.text_area(label="votre code SQL ici", key="user_input")
 #            )
 #        st.dataframe(result.compare(solution_df))
 #
-#tab2, tab3 = st.tabs(["Tables", "Solution_df"])
-#
-#
-#with tab2:
-#    st.write("table: beverages")
-#    st.dataframe(beverages)
+tab2, tab3 = st.tabs(["Tables", "Solution_df"])
+
+with tab2:
+    exercise_tables = ast.literal_eval(exercise.loc[0,"tables"])
+    for table in exercise_tables:
+        st.write(f"table: {table}")
+        df_table = con.execute(f"SELECT * FROM {table}").df()
+        st.dataframe(df_table)
+
+with tab3:
+    exercise_name = exercise.loc[0, "exercise_name"]
+    with open(f"answer/{exercise_name}","r") as f:
+        answer = f.read()
+    st.write(answer)
+
 #    st.write("table: food_items")
 #    st.dataframe(food_items)
 #    st.write("expected:")
